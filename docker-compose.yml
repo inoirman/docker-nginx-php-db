@@ -1,0 +1,41 @@
+version: '3'
+
+services: 
+    nginx:
+        image: nginx:latest
+        container_name: kiadev_nginx
+        ports: 
+            - 8088:80
+            - 443:443
+        volumes: 
+            - ./src:/usr/share/nginx/html
+            - ./nginx:/etc/kiadev_nginx
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - /Users/ignatyka/.config/valet/Certificates:/etc/Certificate
+        depends_on: 
+            - php
+    php:
+        build:
+            context: ./php
+        container_name: kiadev_php
+        volumes: 
+            - ./src:/usr/share/nginx/html
+        depends_on: 
+            - db
+        links: 
+            - db
+    db:
+        image: "mysql:5.7"
+        ports: 
+            - "3390:3306"
+        restart: unless-stopped
+        container_name: kiadev_db
+        volumes: 
+            - ./db_data:/var/lib/mysql
+        environment: 
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: noir
+            MYSQL_PASSWORD: secret
+            MYSQL_DATABASE: ace_db
+    # volumes: 
+    #     db_data: 

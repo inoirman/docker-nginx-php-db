@@ -25,7 +25,7 @@ Database is imported.
 
 `cd /var/lib/mysql`
 
-`mysqldump -u noir -p ace_db > new_file_name.sql`
+`mysqldump --add-drop-table -u noir -p ace_db > new_file_name.sql`
 
 `exit`
 
